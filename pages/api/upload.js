@@ -38,6 +38,7 @@ export default async function handler(req, res) {
       console.log(ext)
 
       const newFileName = Date.now() + '.' + ext
+      console.log(newFileName)
 
       client.send(new PutObjectCommand({
         Bucket:BucketNmame,
@@ -46,10 +47,11 @@ export default async function handler(req, res) {
         ACL:"public-read",
         ContentType:mime.lookup(file.path)
        }))
+       const link = `https://${BucketNmame}.s3.amazonaws.com/${newFileName}`
+       links.push(link)
      }
        
-     const link = `https://${BucketNmame}.s3.amazonaws.com/${newFileName}`
-        links.push(link)
+    
     // Respond with a success message
     res.status(200).json({ message: 'Upload successful', links});
   } catch (error) {

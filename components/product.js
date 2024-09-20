@@ -7,11 +7,12 @@ export default function ProductForm({
   _id,
   description: existingDescription,
   price: existingPrice,
-  images,
+  images:existingImage
 }) {
   const [title, setTitle] = useState(existingTitle || ""); // Use existing data if available
   const [description, setDescription] = useState(existingDescription || "");
   const [price, setPrice] = useState(existingPrice || "");
+  const [images,setImages] = useState(existingImage|| [])
   const [goBackToProduct, setGoBackToProduct] = useState(false);
   const router = useRouter();
 
@@ -47,11 +48,12 @@ export default function ProductForm({
     if(files?.length>0){
       const data = new FormData()
       Array.from(files).forEach(file => data.append('file', file));
-           const res = await fetch('/api/upload',{
-            method:"POST",
-            body:data
-           })
-             console.log(res)
+           
+      const res = await axios.post('/api/upload',data)
+             console.log(res.data)
+             setImages(oldImage=>{
+              return[...oldImage,...res.data.links]
+             })
     }
     
     
@@ -68,6 +70,11 @@ export default function ProductForm({
       />
       <label>photos</label>
       <div className="mb-2">
+        {images?.length && images.map(link=>{
+          <div>
+             {link}
+          </div>
+})}
         <label className="w-24 h-24 bg-gray-200 cursor-pointer flex flex-col items-center justify-center rounded text-gray-400 text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
