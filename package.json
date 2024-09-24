@@ -27,6 +27,10 @@
     "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
+    "react-loader-spinner": "^6.1.6",
+    "react-sortablejs": "^6.1.4",
+    "react-spinner": "^0.2.7",
+    "sortablejs": "^1.15.3",
     "sweetalert2": "^11.14.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"

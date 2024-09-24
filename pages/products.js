@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
 export default function Products() {
   const [product, setProduct] = useState([]);

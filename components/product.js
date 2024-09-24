@@ -1,24 +1,27 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import Spinner from "./spinner";
+import { ReactSortable } from "react-sortablejs";
 
 export default function ProductForm({
   title: existingTitle,
   _id,
   description: existingDescription,
   price: existingPrice,
-  images:existingImage
+  images: existingImage,
 }) {
   const [title, setTitle] = useState(existingTitle || ""); // Use existing data if available
   const [description, setDescription] = useState(existingDescription || "");
   const [price, setPrice] = useState(existingPrice || "");
-  const [images,setImages] = useState(existingImage|| [])
+  const [images, setImages] = useState(existingImage || []);
   const [goBackToProduct, setGoBackToProduct] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { title, description, price };
+    const data = { title, description, price, images };
     console.log(data);
 
     try {
@@ -36,27 +39,31 @@ export default function ProductForm({
       console.error("Error saving product:", error);
     }
   }
-  
 
   if (goBackToProduct) {
     router.push("/products"); // Redirect back to the products page after saving
   }
 
   async function uploadImages(e) {
-    console.log(e)
-    const files = e.target.files
-    if(files?.length>0){
-      const data = new FormData()
-      Array.from(files).forEach(file => data.append('file', file));
-           
-      const res = await axios.post('/api/upload',data)
-             console.log(res.data)
-             setImages(oldImage=>{
-              return[...oldImage,...res.data.links]
-             })
+    console.log(e);
+    const files = e.target.files;
+    if (files?.length > 0) {
+      setLoading(true);
+      const data = new FormData();
+      Array.from(files).forEach((file) => data.append("file", file));
+
+      const res = await axios.post("/api/upload", data);
+      console.log(res.data);
+
+      setImages((oldImage) => {
+        return [...oldImage, ...res.data.links];
+      });
+      setLoading(false);
     }
-    
-    
+   
+  }
+  function updateImageOrder(newImages) {
+    setImages(newImages)
   }
 
   return (
@@ -69,12 +76,20 @@ export default function ProductForm({
         onChange={(e) => setTitle(e.target.value)}
       />
       <label>photos</label>
-      <div className="mb-2">
-        {images?.length && images.map(link=>{
-          <div>
-             {link}
+      <div className="mb-2 flex flex-wrap gap-2">
+        <ReactSortable list={images} setList={updateImageOrder} className="flex flex-wrap gap-2">
+          {!!images.length &&
+            images.map((link) => (
+              <div key={link} className="h-24">
+                <img src={link} />
+              </div>
+            ))}
+        </ReactSortable>
+        {loading && (
+          <div className="w-24 h-24 bg-gray-200">
+            <Spinner className="text-center" />
           </div>
-})}
+        )}
         <label className="w-24 h-24 bg-gray-200 cursor-pointer flex flex-col items-center justify-center rounded text-gray-400 text-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -91,26 +106,25 @@ export default function ProductForm({
             />
           </svg>
           Upload
-          <input type="file" onChange={uploadImages} className="hidden"/>
+          <input type="file" onChange={uploadImages} className="hidden" />
         </label>
-        {!images?.length && <div>No photos for this product</div>}
-        </div>
-        <label>Description</label>
-        <textarea
-            placeholder="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-        />
-        <label>Price</label>
-        <input
-            type="number"
-            placeholder="price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-        />
-        <button type="submit" className="btn-primary">
-            Save
-        </button>
+      </div>
+      <label>Description</label>
+      <textarea
+        placeholder="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <label>Price</label>
+      <input
+        type="number"
+        placeholder="price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+      <button type="submit" className="btn-primary">
+        Save
+      </button>
     </form>
   );
 }
