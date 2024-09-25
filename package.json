@@ -30,6 +30,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-sortablejs": "^6.1.4",
     "react-spinner": "^0.2.7",
+    "react-sweetalert2": "^0.6.0",
     "sortablejs": "^1.15.3",
     "sweetalert2": "^11.14.0",
     "tailwind-merge": "^2.5.2",

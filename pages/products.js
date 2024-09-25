@@ -11,29 +11,7 @@ export default function Products() {
       setProduct(response.data);
     });
   }, []);
-//   console.log(product);
-// const handleDelete = (id) => {
-//     Swal.fire({
-//       title: "Are you sure you want to delete this product?",
-//       text: "This action cannot be undone!",
-//       icon: "warning",
-//       showCancelButton: true,
-//       confirmButtonText: "Yes, delete it!",
-//       cancelButtonText: "No, keep it",
-//     }).then((result) => {
-//       if (result.isConfirmed) {
-//         console.log(id);
-//         axios.delete(`/api/products/${id}`).then(() => {
-//           Swal.fire("Deleted!", "The product has been deleted.", "success");
-//           // Optionally, refetch the products or remove it from the state
-//           setProduct((prevProducts) => prevProducts.filter((p) => p._id !== id));
-//         }).catch((error) => {
-//           console.error("Error deleting product:", error);
-//           Swal.fire("Error!", "There was a problem deleting the product.", "error");
-//         });
-//       }
-//     });
-//   };
+
   
   return (
     <Layout>
