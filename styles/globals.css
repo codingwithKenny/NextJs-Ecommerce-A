@@ -154,7 +154,7 @@ table.basic button{
     @apply bg-background text-foreground;
   }
 }
-/* HTML: <div class="loader"></div> */
+
 .loader {
   width: 50px;
   padding: 8px;

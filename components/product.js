@@ -42,12 +42,12 @@ export default function ProductForm({
       } else {
         // create
         const response = await axios.post("/api/products", data); // Save the product
-        console.log(response);
+        // console.log(response);
       }
 
       setGoBackToProduct(true);
     } catch (error) {
-      console.error("Error saving product:", error);
+      // console.error("Error saving product:", error);
     }
   }
 
@@ -65,7 +65,7 @@ export default function ProductForm({
       Array.from(files).forEach((file) => data.append("file", file));
 
       const res = await axios.post("/api/upload", data);
-      console.log(res.data);
+      // console.log(res.data);
 
       setImages((oldImage) => {
         return [...oldImage, ...res.data.links];
@@ -81,11 +81,13 @@ export default function ProductForm({
   const Properties = []
 
   if(categories?.length>0 && category){
-    const catInfo = categories?.find(({_id})=>{
-      _id === category
-     
-    })
+    const catInfo = categories?.find(({_id})=>_id === category)
+    console.log(catInfo)
+
   }
+ 
+  
+  
 
   return (
     <form onSubmit={saveProduct}>
@@ -102,8 +104,8 @@ export default function ProductForm({
       value={category} 
       onChange={(e)=> setCategory(e.target.value)}>
         <option value="">uncategorize</option>
-        {categories?.length && categories.map(item =>(
-          <option value={item._id}>{item.name}</option>
+        {categories?.length && categories.map((item,index) =>(
+          <option key={index} value={item._id}>{item.name}</option>
         ))}
       </select>
       <label>photos</label>

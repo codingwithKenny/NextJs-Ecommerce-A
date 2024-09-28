@@ -29,7 +29,8 @@ export default function Category() {
     }
     if (Properties.length > 0) {
       // transform and assign Properties
-      data.Properties = Properties.map(p => ({
+      data.Properties = Properties.map((p,i) => ({
+          key:i,
           name: p.name,
           value: p.value.split(",") 
       }));
@@ -58,7 +59,8 @@ export default function Category() {
     setEditedCategory(category);
     setName(category.name);
     setParentCategory(category?.parent?._id);
-    setProperties(category?.Properties.map(({name,value})=>({
+    setProperties(category?.Properties.map(({name,value},i)=>({
+      key:i,
       name,
       value:value.join(',')
     })))
