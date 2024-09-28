@@ -9,8 +9,8 @@ const categorySchema = new Schema({
     parent:{
         type:mongoose.Types.ObjectId,
         ref:"Category"
-        
     },
+    Properties:[{type:Object}]
    
     
 })

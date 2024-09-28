@@ -21,8 +21,8 @@ export default async function handler(req, res) {
     }
 
     if (method === "PUT"){
-      const {title,description,price,images,_id} = req.body
-      await Product.updateOne({_id},{title,description,price,images})
+      const {title,description,price,images,category,_id} = req.body
+      await Product.updateOne({_id},{title,description,price,images,category})
       res.json(true)
     }
 
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     }
 
     if (method === "POST") {
-      const { title, description, price,images } = req.body;
+      const { title, description, price,images,category } = req.body;
 
       if (!title || !price) {
         return res
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
           .json({ message: "Title and price are required" });
       }
 
-      const productData = await Product.create({ title, description, price,images });
+      const productData = await Product.create({ title, description, price,images,category });
       return res.status(201).json({
         message: "Product created",
         productData,

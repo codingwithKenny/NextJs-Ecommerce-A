@@ -1,4 +1,4 @@
-const { Schema, model, models } = require("mongoose");
+const { Schema, model, models, default: mongoose } = require("mongoose");
 
 
 const ProductSchema = new Schema({
@@ -14,7 +14,12 @@ const ProductSchema = new Schema({
         required:true,
     },
     images:
-          [{type:String}]
+          [{type:String}],
+    category:{
+            type:mongoose.Types.ObjectId,
+            ref:"Category"
+            
+        }
     
 })
 

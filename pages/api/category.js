@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     await mongooseConnect();
 
     if (method === "POST") {
-      const { name, parentCategory } = req.body;
+      const { name, parentCategory,Properties } = req.body;
       if (!name) {
         return res.status(400).json({
           message: "Please provide a category name",
@@ -18,6 +18,7 @@ export default async function handler(req, res) {
       const categoryDoc = await Category.create({
         name,
         parent: parentCategory,
+        Properties
       });
       res.status(201).json({
         message: "Category created successfully",
@@ -31,22 +32,22 @@ export default async function handler(req, res) {
     }
 
     if (method === "PUT") {
-      const { name, parentCategory, _id } = req.body;
+      const { name, parentCategory, Properties, _id } = req.body;
+      
       const categoryDoc = await Category.updateOne(
         { _id },
-        { name, parent: parentCategory }
+        { 
+          name, 
+          parent: parentCategory, 
+          Properties
+        }
       );
+    
       res.json(categoryDoc);
     }
+    
 
-    if (method === "DELETE") {
-      if (id) {
-        const result = await Category.deleteOne({ _id: id });
-        res.json(result);
-      } else {
-        res.status(400).json({ message: "Category ID is required" });
-      }
-    }
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({

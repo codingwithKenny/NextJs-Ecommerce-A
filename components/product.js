@@ -10,18 +10,29 @@ export default function ProductForm({
   description: existingDescription,
   price: existingPrice,
   images: existingImage,
+  category:existingCategory
 }) {
   const [title, setTitle] = useState(existingTitle || ""); // Use existing data if available
   const [description, setDescription] = useState(existingDescription || "");
   const [price, setPrice] = useState(existingPrice || "");
+  const [category,setCategory] = useState(existingCategory || "")
   const [images, setImages] = useState(existingImage || []);
   const [goBackToProduct, setGoBackToProduct] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [categories,setCategories] = useState()
   const router = useRouter();
+
+
+  useEffect(()=>{
+    axios.get('/api/category').then(result=>{
+      setCategories(result.data)
+    })
+
+  },[])
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images,category };
     console.log(data);
 
     try {
@@ -43,6 +54,7 @@ export default function ProductForm({
   if (goBackToProduct) {
     router.push("/products"); // Redirect back to the products page after saving
   }
+ 
 
   async function uploadImages(e) {
     console.log(e);
@@ -66,6 +78,15 @@ export default function ProductForm({
     setImages(newImages)
   }
 
+  const Properties = []
+
+  if(categories?.length>0 && category){
+    const catInfo = categories?.find(({_id})=>{
+      _id === category
+     
+    })
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <label>Product Name</label>
@@ -75,6 +96,16 @@ export default function ProductForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      <label>Category</label>
+      <select 
+      className=""
+      value={category} 
+      onChange={(e)=> setCategory(e.target.value)}>
+        <option value="">uncategorize</option>
+        {categories?.length && categories.map(item =>(
+          <option value={item._id}>{item.name}</option>
+        ))}
+      </select>
       <label>photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable list={images} setList={updateImageOrder} className="flex flex-wrap gap-2">
