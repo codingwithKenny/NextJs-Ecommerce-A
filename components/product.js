@@ -78,11 +78,20 @@ export default function ProductForm({
     setImages(newImages)
   }
 
-  const Properties = []
+  const productProperties = []
 
   if(categories?.length>0 && category){
-    const catInfo = categories?.find(({_id})=>_id === category)
+    let catInfo = categories?.find(({_id})=>_id === category)
+    productProperties.push(...catInfo?.Properties)
+    console.log(productProperties)
     console.log(catInfo)
+    while(catInfo?.parent?._id){
+      const parentCat = categories?.find(({_id})=>_id === catInfo?.parent?._id)
+      productProperties.push(...parentCat?.Properties)
+      catInfo = parentCat
+
+    }
+   
 
   }
  
@@ -108,6 +117,12 @@ export default function ProductForm({
           <option key={index} value={item._id}>{item.name}</option>
         ))}
       </select>
+      {productProperties?.length>0 && productProperties.map(pro=>(
+        <div className="flex ">
+          <div className="mr-4">{pro.name}</div>
+          {/* <div>{pro.value}</div> */}
+        </div>
+      ))}
       <label>photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable list={images} setList={updateImageOrder} className="flex flex-wrap gap-2">

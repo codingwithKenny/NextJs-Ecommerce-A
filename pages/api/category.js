@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       }
       const categoryDoc = await Category.create({
         name,
-        parent: parentCategory,
+        parent: parentCategory || undefined,
         Properties
       });
       res.status(201).json({
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
         { _id },
         { 
           name, 
-          parent: parentCategory, 
+          parent: parentCategory || undefined, 
           Properties
         }
       );

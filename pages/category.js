@@ -34,6 +34,9 @@ export default function Category() {
           name: p.name,
           value: p.value.split(",") 
       }));
+  }else{
+    data.Properties = []; // Explicitly set to empty array
+
   }
     if (editedCategory) {
       axios
