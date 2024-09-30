@@ -19,7 +19,8 @@ const ProductSchema = new Schema({
             type:mongoose.Types.ObjectId,
             ref:"Category"
             
-        }
+        },
+    Properties:{type:Object}
     
 })
 

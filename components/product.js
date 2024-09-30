@@ -10,7 +10,8 @@ export default function ProductForm({
   description: existingDescription,
   price: existingPrice,
   images: existingImage,
-  category:existingCategory
+  category:existingCategory,
+  Properties:selectedProperties,
 }) {
   const [title, setTitle] = useState(existingTitle || ""); // Use existing data if available
   const [description, setDescription] = useState(existingDescription || "");
@@ -20,6 +21,7 @@ export default function ProductForm({
   const [goBackToProduct, setGoBackToProduct] = useState(false);
   const [loading, setLoading] = useState(false);
   const [categories,setCategories] = useState()
+  const [productProp,setProductProp] = useState(selectedProperties || {})
   const router = useRouter();
 
 
@@ -32,7 +34,14 @@ export default function ProductForm({
 
   async function saveProduct(e) {
     e.preventDefault();
-    const data = { title, description, price, images,category };
+    const data = { title, 
+                    description,
+                    price,
+                    images,
+                    category ,
+                    Properties:productProp
+
+    };
     console.log(data);
 
     try {
@@ -78,19 +87,31 @@ export default function ProductForm({
     setImages(newImages)
   }
 
+  function handleProductProp(pName,value) {
+    setProductProp(prev=>{
+      const newProductProp = {...prev}
+      newProductProp[pName] = value
+      return newProductProp
+    })
+    
+  }
+
   const productProperties = []
 
   if(categories?.length>0 && category){
     let catInfo = categories?.find(({_id})=>_id === category)
     productProperties.push(...catInfo?.Properties)
     console.log(productProperties)
-    console.log(catInfo)
-    while(catInfo?.parent?._id){
-      const parentCat = categories?.find(({_id})=>_id === catInfo?.parent?._id)
-      productProperties.push(...parentCat?.Properties)
-      catInfo = parentCat
-
+    // console.log(catInfo)
+    let maxIterations = 100; // to avoid infinite loops
+    while (catInfo?.parent?._id && maxIterations > 0) {
+      let parentCat = categories?.find(({_id}) => _id === catInfo?.parent?._id);
+      console.log(parentCat)
+      productProperties.push(...parentCat?.Properties);
+      catInfo = parentCat;
+      maxIterations--;
     }
+    
    
 
   }
@@ -114,13 +135,20 @@ export default function ProductForm({
       onChange={(e)=> setCategory(e.target.value)}>
         <option value="">uncategorize</option>
         {categories?.length && categories.map((item,index) =>(
-          <option key={index} value={item._id}>{item.name}</option>
+          <option key={item._id} value={item._id}>{item.name}</option>
         ))}
       </select>
       {productProperties?.length>0 && productProperties.map(pro=>(
         <div className="flex ">
           <div className="mr-4">{pro.name}</div>
-          {/* <div>{pro.value}</div> */}
+          <select
+          value={productProp?.[pro.name]|| ''}
+           onChange={(e)=> handleProductProp(pro.name,e.target.value)}>
+            {pro.value.map(val=>(
+              <option value={val}>{val}</option>
+            ))}
+          </select>
+          
         </div>
       ))}
       <label>photos</label>

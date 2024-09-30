@@ -21,10 +21,12 @@ export default function editProduct(){
     
     return(
         <Layout>
-            <h1>Edit product</h1>
+           <div>
+           <h1>Edit product</h1>
             {productInfo && (
                <ProductForm {...productInfo}/>
             )}
+           </div>
            
         </Layout>
     )
