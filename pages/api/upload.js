@@ -6,6 +6,8 @@ import mime from 'mime-types'
 const BucketNmame = 'next-ecommerce-ridwat'
 
 export default async function handler(req, res) {
+  await mongooseConnect();
+  await isAdminRequest(req,res)
   // Create a new instance of multiparty.Form
   const form = new multiparty.Form();
 

@@ -8,6 +8,8 @@ export default async function handler(req, res) {
 
   try {
     await mongooseConnect();
+    await isAdminRequest(req,res)
+
 
 
     if (method==='GET'){
