@@ -2,6 +2,8 @@ import { PutObjectCommand, S3, S3Client } from '@aws-sdk/client-s3';
 import multiparty from 'multiparty';
 import fs from 'fs'
 import mime from 'mime-types'
+import { isAdminRequest } from './auth/[...nextauth]';
+import mongooseConnect from '../lib/mongoose';
 
 const BucketNmame = 'next-ecommerce-ridwat'
 

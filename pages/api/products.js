@@ -1,5 +1,6 @@
 import { Product } from "@/models/Products";
 import mongooseConnect from "../lib/mongoose";
+import { isAdminRequest } from "./auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const { method } = req;
