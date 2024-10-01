@@ -1,47 +1,38 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Logo from "./logo";
 
-export default function Nav({show}) {
-  const inactiveLink = "flex gap-1 p-1";
-  const activeLink = inactiveLink + " bg-white text-black rounded-l-lg";
+export default function Nav({ show }) {
+  const inactiveLink =
+    "flex items-center gap-2 p-2 text-sm transition-colors duration-200";
+  const activeLink = `${inactiveLink} bg-white text-black rounded-l-lg shadow-md`;
   const router = useRouter();
   const { pathname } = router;
-  async function logOut(){
-    await router.push('/')
-    await signOut()
+
+  async function logOut() {
+    await router.push("/");
+    await signOut();
   }
+
   return (
-    <aside className={(show?'left-0':'-left-full') +" top-0 text-white p-4 pr-0 fixed w-full h-full bg-gray-500 md:static md:w-auto transition-all "}>
-      <a href="#" className="flex mb-4 gap-1 mr-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="size-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"
-          />
-        </svg>
-        <span>Ecommerce</span>
-      </a>
+    <aside
+      className={`${
+        show ? "left-0" : "-left-full"
+      } top-0 text-white p-6 fixed w-full h-screen bg-gray-800 md:static md:w-auto transition-all duration-300 ease-in-out`}
+    >
+      <div className="mb-6 mr-4">
+      <Logo/>
+      </div>
       <nav className="flex flex-col gap-2">
-        <Link
-          href={"/"}
-          className={pathname === "/" ? activeLink : inactiveLink}
-        >
+        <Link href="/" className={pathname === "/" ? activeLink : inactiveLink}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="w-5 h-5"
           >
             <path
               strokeLinecap="round"
@@ -49,10 +40,10 @@ export default function Nav({show}) {
               d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
             />
           </svg>
-          Dashbord
+          Dashboard
         </Link>
         <Link
-          href={"/products"}
+          href="/products"
           className={pathname.includes("/products") ? activeLink : inactiveLink}
         >
           <svg
@@ -61,7 +52,7 @@ export default function Nav({show}) {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="w-5 h-5"
           >
             <path
               strokeLinecap="round"
@@ -72,7 +63,7 @@ export default function Nav({show}) {
           Products
         </Link>
         <Link
-          href={"/category"}
+          href="/category"
           className={pathname.includes("/category") ? activeLink : inactiveLink}
         >
           <svg
@@ -81,7 +72,7 @@ export default function Nav({show}) {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="size-6"
+            className="w-5 h-5"
           >
             <path
               strokeLinecap="round"
@@ -92,7 +83,7 @@ export default function Nav({show}) {
           Category
         </Link>
         <Link
-          href={"/orders"}
+          href="/orders"
           className={pathname.includes("/orders") ? activeLink : inactiveLink}
         >
           <svg
@@ -101,7 +92,7 @@ export default function Nav({show}) {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="w-5 h-5"
           >
             <path
               strokeLinecap="round"
@@ -111,32 +102,9 @@ export default function Nav({show}) {
           </svg>
           Orders
         </Link>
-        <Link href={"/settings"} className={inactiveLink}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-            />
-          </svg>
-          Settings
-        </Link>
         <Link
-          href={""}
-          onClick={logOut}
-          className="text-white p-2 rounded mt-4 flex gap-2"
+          href="/settings"
+          className={pathname.includes("/settings") ? activeLink : inactiveLink}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -149,11 +117,33 @@ export default function Nav({show}) {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+              d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
             />
           </svg>
-          Sign Out
+          Settings
         </Link>
+        <button onClick={logOut} className={inactiveLink}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25a2.25 2.25 0 0 0-2.25-2.25H4.5a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 4.5 21h9a2.25 2.25 0 0 0 2.25-2.25V15M18 9l3 3m0 0-3 3m3-3H9"
+            />
+          </svg>
+          Log Out
+        </button>
       </nav>
     </aside>
   );

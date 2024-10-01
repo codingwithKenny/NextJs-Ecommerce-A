@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Toast } from "./ui/toast";
 import { useState } from "react";
+import Logo from "./logo";
 
 export default function Layout({ children }) {
   const { data: session } = useSession();
@@ -23,8 +24,8 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="bg-gray-300 min-h-screen">
-      <div className="block md:hidden">
+    <div className="bg-slate-100 min-h-screen">
+      <div className="block md:hidden flex item-center justify-around p-4">
       <button
       onClick={()=>{setShowNav(true)}}>
         <svg
@@ -42,6 +43,7 @@ export default function Layout({ children }) {
           />
         </svg>
       </button>
+      <Logo/>
       </div>
       <div className=" flex">
         <Nav show={showNav} />
